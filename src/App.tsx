@@ -1,427 +1,328 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  CheckCircle2, 
-  ShieldCheck, 
+  Check, 
+  Star, 
   Lock, 
-  ExternalLink, 
+  Camera, 
+  MessageCircle, 
+  Heart, 
+  ChevronRight, 
   Instagram, 
   Twitter, 
-  MessageCircle,
-  Play,
-  Star,
+  ShieldCheck,
   Zap,
-  Heart,
-  Flame,
-  Crown,
-  ChevronRight,
-  Settings
+  Play
 } from 'lucide-react';
 
 const App = () => {
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [activeAlert, setActiveAlert] = useState<{ name: string; time: string } | null>(null);
-  
-  // Editable Content State
-  const [content, setContent] = useState({
-    name: "Eduarda Oficial 💋",
-    username: "@eduardaoficial1_",
-    bio: "Oi, meu amor! 🔥💦 Sou a Duda, e hoje vou revelar um lado meu que vai te deixar sem fôlego… vídeos exclusivos, momentos íntimos e conteúdo sem censura. Estou te esperando para uma experiência única e irresistível. 😈💋",
-    bannerUrl: "https://picsum.photos/seed/duda_banner/800/400",
-    profileUrl: "https://picsum.photos/seed/duda_model/300/300",
-    prices: {
-      monthly: "9,90",
-      quarterly: "14,90",
-      yearly: "29,90"
-    },
-    videoCount: "124"
-  });
-
-  const ALERTS = [
-    { name: "Marcos acabou de assinar!", time: "agora" },
-    { name: "Lucas renovou o plano VIP", time: "2 min atrás" },
-    { name: "Felipe entrou no grupo VIP", time: "5 min atrás" },
-    { name: "Ricardo assinou o plano Anual", time: "10 min atrás" },
-    { name: "Gabriel garantiu o acesso", time: "12 min atrás" },
-  ];
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const alert = ALERTS[Math.floor(Math.random() * ALERTS.length)];
-      setActiveAlert(alert);
-      setTimeout(() => setActiveAlert(null), 4000);
-    }, 12000);
-    return () => clearInterval(interval);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleAdminChange = (field: string, value: any) => {
-    if (field.includes('.')) {
-      const [parent, child] = field.split('.');
-      setContent(prev => ({
-        ...prev,
-        [parent]: {
-          ...(prev as any)[parent],
-          [child]: value
-        }
-      }));
-    } else {
-      setContent(prev => ({ ...prev, [field]: value }));
+  const plans = [
+    {
+      name: "Mensal",
+      price: "R$ 49,90",
+      period: "/mês",
+      description: "Acesso total por 30 dias",
+      features: ["Fotos exclusivas", "Vídeos semanais", "Chat privado", "Acesso ao feed"],
+      recommended: false
+    },
+    {
+      name: "Trimestral",
+      price: "R$ 119,90",
+      period: "/3 meses",
+      description: "Economize 20% no plano",
+      features: ["Tudo do mensal", "Conteúdo extra VIP", "Prioridade no chat", "Descontos em PPV"],
+      recommended: true
+    },
+    {
+      name: "Anual",
+      price: "R$ 399,90",
+      period: "/ano",
+      description: "O melhor custo-benefício",
+      features: ["Tudo do trimestral", "Brinde exclusivo", "Acesso vitalício ao grupo", "Chamada de vídeo mensal"],
+      recommended: false
     }
-  };
+  ];
 
   return (
-    <div className="min-h-screen bg-[#0F0F0F] text-white font-sans selection:bg-orange-500 selection:text-white">
-      {/* Admin Toggle (Hidden in bottom corner) */}
-      <button 
-        onClick={() => setIsAdmin(!isAdmin)}
-        className="fixed bottom-4 right-4 z-[100] w-8 h-8 bg-zinc-900/50 rounded-full flex items-center justify-center opacity-20 hover:opacity-100 transition-opacity"
+    <div className="min-h-screen luxury-gradient selection:bg-gold/30 selection:text-gold">
+      {/* Header */}
+      <header 
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+          isScrolled ? 'bg-black/80 backdrop-blur-lg py-4 border-b border-white/10' : 'bg-transparent py-6'
+        }`}
       >
-        <Settings className="w-4 h-4 text-zinc-500" />
-      </button>
-
-      {/* Admin Dashboard Overlay */}
-      <AnimatePresence>
-        {isAdmin && (
+        <div className="container mx-auto px-6 flex justify-between items-center">
           <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[90] bg-black/80 backdrop-blur-xl p-6 overflow-y-auto"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="text-2xl font-serif font-bold tracking-tighter"
           >
-            <div className="max-w-lg mx-auto bg-zinc-900 border border-zinc-800 rounded-[32px] p-8 shadow-2xl">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className="text-xl font-black uppercase tracking-tighter flex items-center gap-2">
-                  <Settings className="w-5 h-5 text-orange-500" /> Painel Administrativo
-                </h2>
-                <button onClick={() => setIsAdmin(false)} className="p-2 bg-zinc-800 rounded-full">
-                  <ChevronRight className="w-5 h-5 rotate-90" />
-                </button>
-              </div>
-
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-zinc-500">Nome de Exibição</label>
-                  <input 
-                    type="text" 
-                    value={content.name}
-                    onChange={(e) => handleAdminChange('name', e.target.value)}
-                    className="w-full bg-black border border-zinc-800 rounded-xl p-3 text-sm focus:border-orange-500 outline-none"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-zinc-500">Username</label>
-                  <input 
-                    type="text" 
-                    value={content.username}
-                    onChange={(e) => handleAdminChange('username', e.target.value)}
-                    className="w-full bg-black border border-zinc-800 rounded-xl p-3 text-sm focus:border-orange-500 outline-none"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-zinc-500">Biografia</label>
-                  <textarea 
-                    value={content.bio}
-                    onChange={(e) => handleAdminChange('bio', e.target.value)}
-                    rows={3}
-                    className="w-full bg-black border border-zinc-800 rounded-xl p-3 text-sm focus:border-orange-500 outline-none resize-none"
-                  />
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase text-zinc-500">Mensal (R$)</label>
-                    <input 
-                      type="text" 
-                      value={content.prices.monthly}
-                      onChange={(e) => handleAdminChange('prices.monthly', e.target.value)}
-                      className="w-full bg-black border border-zinc-800 rounded-xl p-3 text-sm focus:border-orange-500 outline-none"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase text-zinc-500">Trimestral (R$)</label>
-                    <input 
-                      type="text" 
-                      value={content.prices.quarterly}
-                      onChange={(e) => handleAdminChange('prices.quarterly', e.target.value)}
-                      className="w-full bg-black border border-zinc-800 rounded-xl p-3 text-sm focus:border-orange-500 outline-none"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-[10px] font-black uppercase text-zinc-500">Anual (R$)</label>
-                    <input 
-                      type="text" 
-                      value={content.prices.yearly}
-                      onChange={(e) => handleAdminChange('prices.yearly', e.target.value)}
-                      className="w-full bg-black border border-zinc-800 rounded-xl p-3 text-sm focus:border-orange-500 outline-none"
-                    />
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-zinc-500">URL do Banner</label>
-                  <input 
-                    type="text" 
-                    value={content.bannerUrl}
-                    onChange={(e) => handleAdminChange('bannerUrl', e.target.value)}
-                    className="w-full bg-black border border-zinc-800 rounded-xl p-3 text-sm focus:border-orange-500 outline-none"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase text-zinc-500">URL do Perfil</label>
-                  <input 
-                    type="text" 
-                    value={content.profileUrl}
-                    onChange={(e) => handleAdminChange('profileUrl', e.target.value)}
-                    className="w-full bg-black border border-zinc-800 rounded-xl p-3 text-sm focus:border-orange-500 outline-none"
-                  />
-                </div>
-                <button 
-                  onClick={() => setIsAdmin(false)}
-                  className="w-full py-4 bg-orange-600 text-white font-black rounded-2xl uppercase tracking-widest shadow-xl shadow-orange-600/20"
-                >
-                  Salvar Alterações
-                </button>
-              </div>
-            </div>
+            EDUARDA <span className="text-gold">OFICIAL</span>
           </motion.div>
-        )}
-      </AnimatePresence>
+          
+          <nav className="hidden md:flex items-center space-x-8 text-sm font-medium uppercase tracking-widest">
+            <a href="#inicio" className="hover:text-gold transition-colors">Início</a>
+            <a href="#sobre" className="hover:text-gold transition-colors">Sobre</a>
+            <a href="#planos" className="hover:text-gold transition-colors">Planos</a>
+            <a href="#faq" className="hover:text-gold transition-colors">FAQ</a>
+          </nav>
 
-      {/* Background Glow */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-orange-600/20 blur-[120px] rounded-full"></div>
-        <div className="absolute top-[40%] -right-[10%] w-[30%] h-[30%] bg-orange-500/10 blur-[100px] rounded-full"></div>
-      </div>
-
-      {/* Notifications */}
-      <AnimatePresence>
-        {activeAlert && (
-          <motion.div 
-            initial={{ opacity: 0, x: 50, scale: 0.9 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: 50, scale: 0.9 }}
-            className="fixed top-6 right-6 z-50 bg-zinc-900/90 backdrop-blur-md border border-orange-500/30 shadow-2xl p-4 rounded-2xl flex items-center gap-3 w-72"
+          <motion.button 
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="bg-gold text-black px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider hover:bg-gold-hover transition-colors"
           >
-            <div className="bg-orange-500 p-2 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.4)]">
-              <Zap className="w-4 h-4 text-white fill-current" />
-            </div>
-            <div>
-              <p className="text-sm font-bold text-white">{activeAlert.name}</p>
-              <p className="text-[10px] text-zinc-400 uppercase tracking-widest">{activeAlert.time}</p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            Acessar Agora
+          </motion.button>
+        </div>
+      </header>
 
-      <main className="relative z-10 max-w-lg mx-auto pb-24 flex flex-col items-center">
-        {/* Banner Image - Improved Format */}
-        <div className="w-full h-64 relative overflow-hidden rounded-b-[48px] shadow-2xl">
+      {/* Hero Section */}
+      <section id="inicio" className="relative h-screen flex items-center justify-center overflow-hidden">
+        {/* Background Image with Overlay */}
+        <div className="absolute inset-0 z-0">
           <img 
-            src={content.bannerUrl} 
-            alt="Banner" 
-            className="w-full h-full object-cover"
+            src="https://picsum.photos/seed/luxury-model/1920/1080?blur=2" 
+            alt="Eduarda Hero" 
+            className="w-full h-full object-cover opacity-40"
             referrerPolicy="no-referrer"
           />
-          {/* Multi-layered overlays for professional look */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-[#0F0F0F]"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0F0F0F] via-transparent to-transparent opacity-80"></div>
-          <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-b-[48px]"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-zinc-950"></div>
         </div>
 
-        {/* Profile Section */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="relative mb-6 z-20 -mt-16"
-        >
-          <div className="w-32 h-32 rounded-full p-1.5 bg-gradient-to-tr from-orange-600 to-yellow-400 shadow-[0_15px_35px_rgba(249,115,22,0.4)]">
-            <img 
-              src={content.profileUrl} 
-              alt={content.name}
-              className="w-full h-full object-cover rounded-full border-[6px] border-[#0F0F0F]"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-          <div className="absolute bottom-1 right-1 bg-orange-500 p-2 rounded-full border-4 border-[#0F0F0F] shadow-lg">
-            <CheckCircle2 className="w-4 h-4 text-white fill-current" />
-          </div>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="text-center mb-8 px-6"
-        >
-          <h1 className="text-3xl font-black tracking-tight mb-1 bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-transparent">
-            {content.name}
-          </h1>
-          <p className="text-orange-500 font-black text-sm mb-6 tracking-widest uppercase opacity-80">
-            {content.username}
-          </p>
-          <div className="bg-zinc-900/40 border border-zinc-800/50 p-6 rounded-[32px] backdrop-blur-xl shadow-inner">
-            <p className="text-sm text-zinc-300 leading-relaxed italic font-medium">
-              "{content.bio}"
-            </p>
-          </div>
-        </motion.div>
-
-        {/* Video Panel Section */}
-        <div className="w-full px-6 mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-xs font-black uppercase tracking-widest text-zinc-500 flex items-center gap-2">
-              <Play className="w-4 h-4 text-orange-500 fill-current" /> Conteúdo Exclusivo
-            </h3>
-            <span className="text-[10px] font-black text-orange-500 bg-orange-500/10 border border-orange-500/20 px-3 py-1 rounded-full uppercase tracking-tighter">
-              {content.videoCount} Vídeos
+        <div className="container mx-auto px-6 relative z-10 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            <span className="inline-block px-4 py-1 rounded-full border border-gold/30 text-gold text-xs font-bold uppercase tracking-[0.3em] mb-6">
+              Acesso Exclusivo
             </span>
+            <h1 className="text-6xl md:text-8xl font-serif font-bold mb-6 leading-tight">
+              Sua dose diária de <br />
+              <span className="text-gold italic">Sedução & Luxo</span>
+            </h1>
+            <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
+              Bem-vindo ao meu mundo privado. Conteúdos sem censura, bastidores exclusivos e uma conexão real que você não encontra em nenhum outro lugar.
+            </p>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <button className="gold-gradient text-black px-10 py-4 rounded-full text-lg font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] transition-all duration-300 w-full sm:w-auto">
+                Ver Planos VIP
+              </button>
+              <button className="bg-white/5 hover:bg-white/10 border border-white/20 px-10 py-4 rounded-full text-lg font-bold uppercase tracking-widest transition-all duration-300 w-full sm:w-auto flex items-center justify-center gap-2">
+                <Play size={20} className="text-gold" /> Preview
+              </button>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <motion.div 
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30"
+        >
+          <div className="w-px h-12 bg-gradient-to-b from-gold to-transparent mx-auto"></div>
+        </motion.div>
+      </section>
+
+      {/* Features Section */}
+      <section id="sobre" className="py-24 bg-zinc-950">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4">O que te espera no VIP</h2>
+            <div className="w-20 h-1 bg-gold mx-auto"></div>
           </div>
-          
-          <div className="grid grid-cols-2 gap-4">
-            {[1, 2, 3, 4].map((i) => (
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { icon: <Camera size={32} />, title: "Fotos 4K", desc: "Ensaios profissionais e amadores com a mais alta qualidade de imagem." },
+              { icon: <Play size={32} />, title: "Vídeos HD", desc: "Conteúdos dinâmicos, bastidores e vídeos exclusivos toda semana." },
+              { icon: <MessageCircle size={32} />, title: "Chat Direto", desc: "Fale comigo pessoalmente. Respondo todos os meus assinantes VIP." },
+              { icon: <Lock size={32} />, title: "Sem Censura", desc: "A liberdade total que as redes sociais não permitem." },
+              { icon: <Zap size={32} />, title: "Lives VIP", desc: "Transmissões ao vivo interativas exclusivas para membros." },
+              { icon: <ShieldCheck size={32} />, title: "Privacidade", desc: "Ambiente 100% seguro e discreto para sua tranquilidade." }
+            ].map((feature, idx) => (
               <motion.div 
-                key={i}
-                whileHover={{ scale: 1.03, y: -5 }}
-                className="relative aspect-[9/16] rounded-[24px] overflow-hidden group cursor-pointer border border-zinc-800/50 shadow-xl"
+                key={idx}
+                whileHover={{ y: -10 }}
+                className="glass-card p-8 rounded-3xl text-center group"
               >
-                <img 
-                  src={`https://picsum.photos/seed/duda_vid_${i}/400/700`} 
-                  alt={`Preview ${i}`} 
-                  className="w-full h-full object-cover blur-[3px] group-hover:blur-0 transition-all duration-700"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-colors flex flex-col items-center justify-center">
-                  <div className="w-12 h-12 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/20 group-hover:bg-orange-500 group-hover:border-orange-400 group-hover:scale-110 transition-all duration-500 shadow-2xl">
-                    <Lock className="w-5 h-5 text-white" />
-                  </div>
-                  <p className="mt-3 text-[10px] font-black uppercase tracking-widest text-white/90 group-hover:text-white transition-colors">Desbloquear</p>
+                <div className="w-16 h-16 bg-gold/10 rounded-2xl flex items-center justify-center text-gold mx-auto mb-6 group-hover:bg-gold group-hover:text-black transition-all duration-500">
+                  {feature.icon}
                 </div>
-                <div className="absolute top-3 left-3 bg-orange-600/90 backdrop-blur-md text-[8px] font-black px-2.5 py-1 rounded-full uppercase tracking-tighter border border-orange-400/30">
-                  4K + Audio
-                </div>
+                <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
+                <p className="text-zinc-400 font-light">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
+      </section>
 
-        {/* Action Buttons */}
-        <div className="w-full space-y-4 mb-12 px-6">
-          <motion.a 
-            href="#"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="group relative block w-full bg-gradient-to-r from-orange-600 to-orange-500 p-0.5 rounded-[24px] shadow-[0_20px_40px_rgba(249,115,22,0.25)]"
-          >
-            <div className="bg-orange-600 group-hover:bg-orange-500 transition-colors px-6 py-6 rounded-[22px] flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="bg-white/20 p-2.5 rounded-xl backdrop-blur-md border border-white/20">
-                  <Flame className="w-6 h-6 text-white" />
-                </div>
-                <div className="text-left">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-orange-200 mb-0.5">Mais Popular 🔥</p>
-                  <p className="text-xl font-black text-white">30 DIAS - R$ {content.prices.monthly}</p>
-                </div>
-              </div>
-              <ChevronRight className="w-6 h-6 text-white/50 group-hover:text-white group-hover:translate-x-1 transition-all" />
-            </div>
-            <div className="absolute -top-3 right-8 bg-white text-orange-600 text-[9px] font-black px-4 py-1.5 rounded-full uppercase tracking-widest shadow-2xl border border-orange-100">
-              Chamada de Vídeo Inclusa
-            </div>
-          </motion.a>
-
-          <motion.a 
-            href="#"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.3 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="group block w-full bg-zinc-900/50 border border-zinc-800 hover:border-orange-500/50 transition-all px-6 py-6 rounded-[24px] backdrop-blur-sm"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="bg-orange-500/10 p-2.5 rounded-xl border border-orange-500/20">
-                  <Crown className="w-6 h-6 text-orange-500" />
-                </div>
-                <div className="text-left">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-0.5">Economia Garantida</p>
-                  <p className="text-xl font-black text-white">3 MESES - R$ {content.prices.quarterly}</p>
-                </div>
-              </div>
-              <ChevronRight className="w-6 h-6 text-zinc-700 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
-            </div>
-          </motion.a>
-
-          <motion.a 
-            href="#"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.4 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            className="group block w-full bg-zinc-900/50 border border-zinc-800 hover:border-orange-500/50 transition-all px-6 py-6 rounded-[24px] backdrop-blur-sm"
-          >
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="bg-orange-500/10 p-2.5 rounded-xl border border-orange-500/20">
-                  <Star className="w-6 h-6 text-orange-500" />
-                </div>
-                <div className="text-left">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-500 mb-0.5">Melhor Oferta</p>
-                  <p className="text-xl font-black text-white">1 ANO - R$ {content.prices.yearly}</p>
-                </div>
-              </div>
-              <ChevronRight className="w-6 h-6 text-zinc-700 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
-            </div>
-          </motion.a>
+      {/* Plans Section */}
+      <section id="planos" className="py-24 relative overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gold rounded-full blur-[150px]"></div>
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gold rounded-full blur-[150px]"></div>
         </div>
 
-        {/* Social Links */}
-        <div className="flex gap-6 mb-12 px-6">
-          <a href="#" className="p-3 bg-zinc-900 rounded-full border border-zinc-800 text-zinc-400 hover:text-orange-500 hover:border-orange-500/30 transition-all">
-            <Instagram className="w-6 h-6" />
-          </a>
-          <a href="#" className="p-3 bg-zinc-900 rounded-full border border-zinc-800 text-zinc-400 hover:text-orange-500 hover:border-orange-500/30 transition-all">
-            <Twitter className="w-6 h-6" />
-          </a>
-          <a href="#" className="p-3 bg-zinc-900 rounded-full border border-zinc-800 text-zinc-400 hover:text-orange-500 hover:border-orange-500/30 transition-all">
-            <MessageCircle className="w-6 h-6" />
-          </a>
+        <div className="container mx-auto px-6 relative z-10">
+          <div className="text-center mb-20">
+            <span className="text-gold font-bold uppercase tracking-widest text-sm">Escolha seu nível</span>
+            <h2 className="text-4xl md:text-6xl font-serif font-bold mt-4">Planos de Assinatura</h2>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {plans.map((plan, idx) => (
+              <motion.div 
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                viewport={{ once: true }}
+                className={`relative p-8 rounded-[2.5rem] flex flex-col ${
+                  plan.recommended 
+                    ? 'bg-zinc-900 border-2 border-gold shadow-[0_20px_50px_rgba(212,175,55,0.15)] scale-105 z-10' 
+                    : 'glass-card border-white/5'
+                }`}
+              >
+                {plan.recommended && (
+                  <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gold text-black px-6 py-1 rounded-full text-xs font-bold uppercase tracking-widest">
+                    Mais Popular
+                  </div>
+                )}
+
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold mb-2">{plan.name}</h3>
+                  <p className="text-zinc-400 text-sm font-light">{plan.description}</p>
+                </div>
+
+                <div className="mb-8 flex items-baseline gap-1">
+                  <span className="text-4xl font-bold">{plan.price}</span>
+                  <span className="text-zinc-500 text-sm">{plan.period}</span>
+                </div>
+
+                <div className="space-y-4 mb-10 flex-grow">
+                  {plan.features.map((feature, fIdx) => (
+                    <div key={fIdx} className="flex items-center gap-3">
+                      <div className="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center text-gold">
+                        <Check size={12} />
+                      </div>
+                      <span className="text-sm text-zinc-300 font-light">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <button className={`w-full py-4 rounded-2xl font-bold uppercase tracking-widest transition-all duration-300 ${
+                  plan.recommended 
+                    ? 'gold-gradient text-black hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]' 
+                    : 'bg-white/10 hover:bg-white/20 text-white'
+                }`}>
+                  Assinar VIP
+                </button>
+              </motion.div>
+            ))}
+          </div>
         </div>
+      </section>
 
-        {/* Trust Badges */}
-        <div className="w-full grid grid-cols-2 gap-4 mb-12 px-6">
-          <div className="bg-zinc-900/30 border border-zinc-800/50 p-4 rounded-2xl flex items-center gap-3">
-            <ShieldCheck className="w-5 h-5 text-orange-500" />
-            <span className="text-[10px] font-bold uppercase text-zinc-500 tracking-tighter">Acesso Seguro</span>
-          </div>
-          <div className="bg-zinc-900/30 border border-zinc-800/50 p-4 rounded-2xl flex items-center gap-3">
-            <Lock className="w-5 h-5 text-orange-500" />
-            <span className="text-[10px] font-bold uppercase text-zinc-500 tracking-tighter">Privacidade Total</span>
+      {/* Social Proof */}
+      <section className="py-20 border-y border-white/5 bg-black/40">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-wrap justify-center items-center gap-12 md:gap-24 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
+            <div className="flex items-center gap-2">
+              <Star className="text-gold fill-gold" size={24} />
+              <span className="text-xl font-bold tracking-tighter italic">OnlyFans Verified</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="text-gold" size={24} />
+              <span className="text-xl font-bold tracking-tighter italic">Secure Payment</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Heart className="text-gold fill-gold" size={24} />
+              <span className="text-xl font-bold tracking-tighter italic">10k+ Subscribers</span>
+            </div>
           </div>
         </div>
+      </section>
 
-        {/* Footer */}
-        <footer className="w-full text-center space-y-4">
-          <p className="text-[10px] text-zinc-600 font-bold uppercase tracking-[0.2em]">Eduarda Oficial © 2024</p>
-          <div className="flex justify-center gap-6">
-            <a href="#" className="text-[9px] text-zinc-500 uppercase font-bold hover:text-orange-500 transition-colors">Termos de Uso</a>
-            <a href="#" className="text-[9px] text-zinc-500 uppercase font-bold hover:text-orange-500 transition-colors">Privacidade</a>
+      {/* FAQ Section */}
+      <section id="faq" className="py-24 bg-zinc-950">
+        <div className="container mx-auto px-6 max-w-3xl">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-serif font-bold mb-4">Dúvidas Frequentes</h2>
+            <p className="text-zinc-400 font-light">Tudo o que você precisa saber antes de entrar para o time.</p>
           </div>
-        </footer>
-      </main>
 
-      {/* Floating CTA for Mobile */}
-      <motion.div 
-        initial={{ y: 100 }}
-        animate={{ y: 0 }}
-        className="fixed bottom-6 left-6 right-6 z-40 md:hidden"
-      >
-        <button className="w-full py-4 bg-orange-600 text-white font-black rounded-2xl shadow-2xl shadow-orange-600/40 flex items-center justify-center gap-2 uppercase tracking-widest text-sm">
-          <Play className="w-4 h-4 fill-current" /> Ver Conteúdo Agora
-        </button>
-      </motion.div>
+          <div className="space-y-4">
+            {[
+              { q: "O conteúdo é atualizado com que frequência?", a: "Posto novos conteúdos quase todos os dias. Ensaios completos são lançados semanalmente." },
+              { q: "Quais as formas de pagamento?", a: "Aceitamos Cartão de Crédito, PIX e Criptomoedas através de nossa plataforma segura." },
+              { q: "Posso cancelar a qualquer momento?", a: "Sim, você tem total liberdade para cancelar sua assinatura quando desejar, sem taxas ocultas." },
+              { q: "Como funciona o chat privado?", a: "Assim que assinar, você terá um botão de mensagem direta no meu perfil para falarmos em particular." }
+            ].map((item, idx) => (
+              <div key={idx} className="glass-card p-6 rounded-2xl">
+                <h4 className="font-bold mb-2 flex items-center gap-2">
+                  <ChevronRight size={16} className="text-gold" /> {item.q}
+                </h4>
+                <p className="text-zinc-400 text-sm font-light pl-6">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 bg-black border-t border-white/5">
+        <div className="container mx-auto px-6">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-8">
+            <div className="text-center md:text-left">
+              <div className="text-xl font-serif font-bold tracking-tighter mb-2">
+                EDUARDA <span className="text-gold">OFICIAL</span>
+              </div>
+              <p className="text-zinc-500 text-xs font-light tracking-widest uppercase">
+                © 2024 Todos os direitos reservados.
+              </p>
+            </div>
+
+            <div className="flex items-center gap-6">
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold hover:text-black transition-all duration-300">
+                <Instagram size={20} />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold hover:text-black transition-all duration-300">
+                <Twitter size={20} />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-gold hover:text-black transition-all duration-300">
+                <MessageCircle size={20} />
+              </a>
+            </div>
+
+            <div className="flex gap-6 text-[10px] font-bold uppercase tracking-widest text-zinc-600">
+              <a href="#" className="hover:text-gold transition-colors">Termos de Uso</a>
+              <a href="#" className="hover:text-gold transition-colors">Privacidade</a>
+              <a href="#" className="hover:text-gold transition-colors">Suporte</a>
+            </div>
+          </div>
+          
+          <div className="mt-12 pt-8 border-t border-white/5 text-center">
+            <p className="text-[10px] text-zinc-700 max-w-2xl mx-auto leading-relaxed">
+              AVISO: Este site contém conteúdo adulto. Você deve ter pelo menos 18 anos de idade para acessar. Ao entrar, você concorda com nossos termos e confirma sua maioridade legal.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };
