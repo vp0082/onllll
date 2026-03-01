@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { 
   Check, 
   Star, 
@@ -7,12 +7,11 @@ import {
   Camera, 
   MessageCircle, 
   Heart, 
-  ChevronRight, 
-  Instagram, 
-  Twitter, 
+  Play,
+  Instagram,
+  Twitter,
   ShieldCheck,
-  Zap,
-  Play
+  Zap
 } from 'lucide-react';
 
 const App = () => {
@@ -28,28 +27,31 @@ const App = () => {
 
   const plans = [
     {
-      name: "Mensal",
-      price: "R$ 49,90",
+      name: "30 DIAS",
+      price: "R$ 9,90",
       period: "/mês",
       description: "Acesso total por 30 dias",
-      features: ["Fotos exclusivas", "Vídeos semanais", "Chat privado", "Acesso ao feed"],
-      recommended: false
+      features: ["Fotos exclusivas", "Vídeos semanais", "Chat privado", "CHAMADA DE VIDEO COMIGO HOJE!"],
+      recommended: true,
+      link: "https://pay.risepay.com.br/Pay/5ed4ccc92a1f4e8e9aecab93cb07685d"
     },
     {
-      name: "Trimestral",
-      price: "R$ 119,90",
-      period: "/3 meses",
-      description: "Economize 20% no plano",
+      name: "3 MESES",
+      price: "R$ 14,90",
+      period: "/trimestre",
+      description: "Economia garantida",
       features: ["Tudo do mensal", "Conteúdo extra VIP", "Prioridade no chat", "Descontos em PPV"],
-      recommended: true
+      recommended: false,
+      link: "https://pay.risepay.com.br/Pay/a3476d093c5d45a09c188e2b758270ff"
     },
     {
-      name: "Anual",
-      price: "R$ 399,90",
+      name: "1 ANO",
+      price: "R$ 29,90",
       period: "/ano",
-      description: "O melhor custo-benefício",
+      description: "Melhor oferta",
       features: ["Tudo do trimestral", "Brinde exclusivo", "Acesso vitalício ao grupo", "Chamada de vídeo mensal"],
-      recommended: false
+      recommended: false,
+      link: "https://pay.risepay.com.br/Pay/e5c0236d2d8c447bb658a5da5143259e"
     }
   ];
 
@@ -67,32 +69,32 @@ const App = () => {
             animate={{ opacity: 1, x: 0 }}
             className="text-2xl font-serif font-bold tracking-tighter"
           >
-            EDUARDA <span className="text-gold">OFICIAL</span>
+            EDUARDA <span className="text-gold">OFC</span>
           </motion.div>
           
           <nav className="hidden md:flex items-center space-x-8 text-sm font-medium uppercase tracking-widest">
             <a href="#inicio" className="hover:text-gold transition-colors">Início</a>
             <a href="#sobre" className="hover:text-gold transition-colors">Sobre</a>
             <a href="#planos" className="hover:text-gold transition-colors">Planos</a>
-            <a href="#faq" className="hover:text-gold transition-colors">FAQ</a>
           </nav>
 
-          <motion.button 
+          <motion.a 
+            href="https://pay.risepay.com.br/Pay/5ed4ccc92a1f4e8e9aecab93cb07685d"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="bg-gold text-black px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider hover:bg-gold-hover transition-colors"
           >
             Acessar Agora
-          </motion.button>
+          </motion.a>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section id="inicio" className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section id="inicio" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <img 
-            src="https://picsum.photos/seed/luxury-model/1920/1080?blur=2" 
+            src="https://picsum.photos/seed/duda-vip/1920/1080?blur=2" 
             alt="Eduarda Hero" 
             className="w-full h-full object-cover opacity-40"
             referrerPolicy="no-referrer"
@@ -106,36 +108,31 @@ const App = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <span className="inline-block px-4 py-1 rounded-full border border-gold/30 text-gold text-xs font-bold uppercase tracking-[0.3em] mb-6">
-              Acesso Exclusivo
+            <div className="mb-6">
+              <img 
+                src="https://picsum.photos/seed/duda-profile/200/200" 
+                alt="Eduarda Oficial" 
+                className="w-32 h-32 rounded-full border-4 border-gold mx-auto object-cover shadow-[0_0_30px_rgba(212,175,55,0.3)]"
+                referrerPolicy="no-referrer"
+              />
+            </div>
+            <span className="inline-block px-4 py-1 rounded-full border border-gold/30 text-gold text-xs font-bold uppercase tracking-[0.3em] mb-4">
+              @eduardaoficial1_
             </span>
-            <h1 className="text-6xl md:text-8xl font-serif font-bold mb-6 leading-tight">
-              Sua dose diária de <br />
-              <span className="text-gold italic">Sedução & Luxo</span>
+            <h1 className="text-5xl md:text-7xl font-serif font-bold mb-6 leading-tight">
+              Eduarda <span className="text-gold italic">Oficial 💋</span>
             </h1>
-            <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 font-light leading-relaxed">
-              Bem-vindo ao meu mundo privado. Conteúdos sem censura, bastidores exclusivos e uma conexão real que você não encontra em nenhum outro lugar.
+            <p className="text-lg md:text-xl text-zinc-300 max-w-3xl mx-auto mb-10 font-light leading-relaxed bg-black/40 backdrop-blur-sm p-6 rounded-3xl border border-white/5">
+              Oi, meu amor! 🔥💦 Sou a Duda, e hoje vou revelar um lado meu que vai te deixar sem fôlego… vídeos gozando com meus ficantes, trisal com amigas safadas e momentos íntimos onde me entrego de corpo e alma. 😏 Cada centímetro do meu corpo é pura tentação e minhas fotos peladas são um convite exclusivo para você explorar seus desejos mais secretos tudo sem censura! Se você tem coragem de se perder nessa paixão sem limites, vem comigo... Estou te esperando para uma experiência única e irresistível.😈💋
             </p>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <button className="gold-gradient text-black px-10 py-4 rounded-full text-lg font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] transition-all duration-300 w-full sm:w-auto">
-                Ver Planos VIP
-              </button>
-              <button className="bg-white/5 hover:bg-white/10 border border-white/20 px-10 py-4 rounded-full text-lg font-bold uppercase tracking-widest transition-all duration-300 w-full sm:w-auto flex items-center justify-center gap-2">
-                <Play size={20} className="text-gold" /> Preview
-              </button>
+              <a href="#planos" className="gold-gradient text-black px-10 py-4 rounded-full text-lg font-bold uppercase tracking-widest hover:shadow-[0_0_30px_rgba(212,175,55,0.3)] transition-all duration-300 w-full sm:w-auto">
+                VER CONTEÚDO AGORA
+              </a>
             </div>
           </motion.div>
         </div>
-
-        {/* Scroll Indicator */}
-        <motion.div 
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white/30"
-        >
-          <div className="w-px h-12 bg-gradient-to-b from-gold to-transparent mx-auto"></div>
-        </motion.div>
       </section>
 
       {/* Features Section */}
@@ -148,12 +145,12 @@ const App = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { icon: <Camera size={32} />, title: "Fotos 4K", desc: "Ensaios profissionais e amadores com a mais alta qualidade de imagem." },
-              { icon: <Play size={32} />, title: "Vídeos HD", desc: "Conteúdos dinâmicos, bastidores e vídeos exclusivos toda semana." },
-              { icon: <MessageCircle size={32} />, title: "Chat Direto", desc: "Fale comigo pessoalmente. Respondo todos os meus assinantes VIP." },
-              { icon: <Lock size={32} />, title: "Sem Censura", desc: "A liberdade total que as redes sociais não permitem." },
-              { icon: <Zap size={32} />, title: "Lives VIP", desc: "Transmissões ao vivo interativas exclusivas para membros." },
-              { icon: <ShieldCheck size={32} />, title: "Privacidade", desc: "Ambiente 100% seguro e discreto para sua tranquilidade." }
+              { icon: <Camera size={32} />, title: "Fotos Sem Censura", desc: "Ensaios picantes e amadores com a mais alta qualidade." },
+              { icon: <Play size={32} />, title: "Vídeos Explícitos", desc: "Vídeos gozando, trisal e momentos íntimos toda semana." },
+              { icon: <MessageCircle size={32} />, title: "Chat Privado", desc: "Fale comigo pessoalmente. Respondo todos os meus assinantes VIP." },
+              { icon: <Lock size={32} />, title: "Acesso Vitalício", desc: "No plano anual você garante seu lugar no meu mundo para sempre." },
+              { icon: <Zap size={32} />, title: "Chamada de Vídeo", desc: "Ganhe uma chamada de vídeo exclusiva assinando o plano mensal hoje!" },
+              { icon: <ShieldCheck size={32} />, title: "100% Discreto", desc: "Ambiente seguro e cobrança discreta no seu cartão." }
             ].map((feature, idx) => (
               <motion.div 
                 key={idx}
@@ -180,8 +177,8 @@ const App = () => {
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="text-center mb-20">
-            <span className="text-gold font-bold uppercase tracking-widest text-sm">Escolha seu nível</span>
-            <h2 className="text-4xl md:text-6xl font-serif font-bold mt-4">Planos de Assinatura</h2>
+            <span className="text-gold font-bold uppercase tracking-widest text-sm">Escolha sua experiência</span>
+            <h2 className="text-4xl md:text-6xl font-serif font-bold mt-4">Assinaturas VIP</h2>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
@@ -200,7 +197,7 @@ const App = () => {
               >
                 {plan.recommended && (
                   <div className="absolute -top-5 left-1/2 -translate-x-1/2 bg-gold text-black px-6 py-1 rounded-full text-xs font-bold uppercase tracking-widest">
-                    Mais Popular
+                    MAIS POPULAR 🔥🔥
                   </div>
                 )}
 
@@ -220,20 +217,34 @@ const App = () => {
                       <div className="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center text-gold">
                         <Check size={12} />
                       </div>
-                      <span className="text-sm text-zinc-300 font-light">{feature}</span>
+                      <span className={`text-sm font-light ${feature.includes('CHAMADA') ? 'text-gold font-bold' : 'text-zinc-300'}`}>
+                        {feature}
+                      </span>
                     </div>
                   ))}
                 </div>
 
-                <button className={`w-full py-4 rounded-2xl font-bold uppercase tracking-widest transition-all duration-300 ${
-                  plan.recommended 
-                    ? 'gold-gradient text-black hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]' 
-                    : 'bg-white/10 hover:bg-white/20 text-white'
-                }`}>
-                  Assinar VIP
-                </button>
+                <a 
+                  href={plan.link}
+                  className={`w-full py-4 rounded-2xl font-bold uppercase tracking-widest text-center transition-all duration-300 ${
+                    plan.recommended 
+                      ? 'gold-gradient text-black hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]' 
+                      : 'bg-white/10 hover:bg-white/20 text-white'
+                  }`}
+                >
+                  ASSINAR AGORA
+                </a>
               </motion.div>
             ))}
+          </div>
+          
+          <div className="mt-16 text-center">
+            <a 
+              href="https://pay.risepay.com.br/Pay/5ed4ccc92a1f4e8e9aecab93cb07685d"
+              className="inline-block bg-gold text-black px-12 py-5 rounded-full text-xl font-bold uppercase tracking-widest hover:scale-105 transition-transform shadow-[0_0_40px_rgba(212,175,55,0.4)]"
+            >
+              VEJA TUDO POR APENAS R$ 9,90
+            </a>
           </div>
         </div>
       </section>
@@ -258,39 +269,13 @@ const App = () => {
         </div>
       </section>
 
-      {/* FAQ Section */}
-      <section id="faq" className="py-24 bg-zinc-950">
-        <div className="container mx-auto px-6 max-w-3xl">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-serif font-bold mb-4">Dúvidas Frequentes</h2>
-            <p className="text-zinc-400 font-light">Tudo o que você precisa saber antes de entrar para o time.</p>
-          </div>
-
-          <div className="space-y-4">
-            {[
-              { q: "O conteúdo é atualizado com que frequência?", a: "Posto novos conteúdos quase todos os dias. Ensaios completos são lançados semanalmente." },
-              { q: "Quais as formas de pagamento?", a: "Aceitamos Cartão de Crédito, PIX e Criptomoedas através de nossa plataforma segura." },
-              { q: "Posso cancelar a qualquer momento?", a: "Sim, você tem total liberdade para cancelar sua assinatura quando desejar, sem taxas ocultas." },
-              { q: "Como funciona o chat privado?", a: "Assim que assinar, você terá um botão de mensagem direta no meu perfil para falarmos em particular." }
-            ].map((item, idx) => (
-              <div key={idx} className="glass-card p-6 rounded-2xl">
-                <h4 className="font-bold mb-2 flex items-center gap-2">
-                  <ChevronRight size={16} className="text-gold" /> {item.q}
-                </h4>
-                <p className="text-zinc-400 text-sm font-light pl-6">{item.a}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="py-12 bg-black border-t border-white/5">
         <div className="container mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-8">
             <div className="text-center md:text-left">
               <div className="text-xl font-serif font-bold tracking-tighter mb-2">
-                EDUARDA <span className="text-gold">OFICIAL</span>
+                EDUARDA <span className="text-gold">OFC</span>
               </div>
               <p className="text-zinc-500 text-xs font-light tracking-widest uppercase">
                 © 2024 Todos os direitos reservados.
@@ -310,8 +295,8 @@ const App = () => {
             </div>
 
             <div className="flex gap-6 text-[10px] font-bold uppercase tracking-widest text-zinc-600">
-              <a href="#" className="hover:text-gold transition-colors">Termos de Uso</a>
-              <a href="#" className="hover:text-gold transition-colors">Privacidade</a>
+              <a href="https://dudaconteudos.shop/duda/termos.html" className="hover:text-gold transition-colors">Termos de Uso</a>
+              <a href="https://dudaconteudos.shop/duda/privacidade.html" className="hover:text-gold transition-colors">Privacidade</a>
               <a href="#" className="hover:text-gold transition-colors">Suporte</a>
             </div>
           </div>
